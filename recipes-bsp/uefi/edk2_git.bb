@@ -12,10 +12,10 @@ PV = "0.0+${SRCPV}"
 
 SRCREV_FORMAT = "edk2-atf"
 
-SRCREV_edk2 = "53596a72cd96f84c7ca83254246f3520a49861b1"
-SRCREV_atf = "68fc81743e8671312a98c364ba2b0d69429cf4c6"
-SRCREV_openplatformpkg = "ce9c1b7dbb2f5d506240626c77b685adbdeeda8e"
-SRCREV_uefitools = "d30846ab593f8e525c5b0f4399406d0ac8e69002"
+SRCREV_edk2 = "c0cb1e1a72bccb5c83d7a36a8e52a38002b18671"
+SRCREV_atf = "d0c104e1e1ad0102f0f4c70997b7ee6e6fbbe273"
+SRCREV_openplatformpkg = "028971707ed3fe327421c9cad7510ade574dc653"
+SRCREV_uefitools = "8c8bfc6263e81242ea51f1f9e304078dda70e149"
 
 SRC_URI = "git://github.com/tianocore/edk2.git;name=edk2 \
            git://github.com/ARM-software/arm-trusted-firmware.git;name=atf;destsuffix=git/atf \
@@ -27,7 +27,6 @@ SRC_URI_append = " git://git.linaro.org/uefi/uefi-tools.git;name=uefitools;dests
 
 S = "${WORKDIR}/git"
 
-export AARCH64_TOOLCHAIN = "GCC49"
 export EDK2_DIR = "${S}"
 
 export CROSS_COMPILE_64 = "${TARGET_PREFIX}"
@@ -55,7 +54,7 @@ do_compile() {
     # ... and the library itself
     sed -i -e 's: -luuid: -luuid -L ${STAGING_LIBDIR_NATIVE}:g' ${S}/BaseTools/Source/C/*/GNUmakefile
 
-    ${EDK2_DIR}/uefi-tools/uefi-build.sh -b RELEASE -a ${EDK2_DIR}/atf ${OPTEE_OS_ARG} ${UEFIMACHINE}
+    ${EDK2_DIR}/uefi-tools/uefi-build.sh -T GCC49 -b RELEASE -a ${EDK2_DIR}/atf ${OPTEE_OS_ARG} ${UEFIMACHINE}
 }
 
 do_deploy() {
