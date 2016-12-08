@@ -57,8 +57,19 @@ do_compile() {
     ${EDK2_DIR}/uefi-tools/uefi-build.sh -T GCC49 -b RELEASE -a ${EDK2_DIR}/atf ${OPTEE_OS_ARG} ${UEFIMACHINE}
 }
 
+do_install() {
+    # Placeholder to be overriden in machine specific recipe
+    if [ -e ${EDK2_DIR}/atf/build/${UEFIMACHINE}/release/fip.bin ] ; then
+        install -d ${D}${libdir}/edk2/
+        install -D -p -m0644 ${EDK2_DIR}/atf/build/${UEFIMACHINE}/release/*.bin ${D}${libdir}/edk2/
+    fi
+}
+
 do_deploy() {
-    # Placeholder to be implemented in machine specific recipe
+    # Placeholder to be overriden in machine specific recipe
+    if [ -e ${EDK2_DIR}/atf/build/${UEFIMACHINE}/release/fip.bin ] ; then
+        install -D -p -m0644 ${EDK2_DIR}/atf/build/${UEFIMACHINE}/release/*.bin ${DEPLOYDIR}
+    fi
 }
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
